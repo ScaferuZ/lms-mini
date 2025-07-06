@@ -1,0 +1,238 @@
+@page "/assignments/{id:int}"
+@using MiniLMS.DTOs
+@using MiniLMS.Services
+@using System.Security.Claims
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject IAssignmentService AssignmentService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>Assignment Details</PageTitle>
+
+@if (assignment == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>@assignment.Title</h1>
+                <p class="text-muted">Created by @assignment.CreatedByUserName on @assignment.CreatedAt.ToString("MMM dd, yyyy")</p>
+                
+                @if (assignment.DueDate.HasValue)
+                {
+                    <p class="text-muted">Due: @assignment.DueDate.Value.ToString("MMM dd, yyyy")</p>
+                }
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Assignment Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>@assignment.Description</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Learning Material</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (assignment.MaterialType == "Link" && !string.IsNullOrEmpty(assignment.MaterialUrl))
+                        {
+                            <p><a href="@assignment.MaterialUrl" target="_blank" class="btn btn-outline-primary">Open Material</a></p>
+                        }
+                        else if (assignment.MaterialType == "Pdf" && !string.IsNullOrEmpty(assignment.MaterialUrl))
+                        {
+                            <p><a href="@assignment.MaterialUrl" target="_blank" class="btn btn-outline-primary">View PDF</a></p>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(assignment.MaterialContent))
+                        {
+                            <div class="mt-3">
+                                @((MarkupString)assignment.MaterialContent.Replace("\n", "<br/>"))
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (assignment.UserProgress?.Status == "Completed")
+                {
+                    <div class="alert alert-success">
+                        <h5>Assignment Completed!</h5>
+                        <p>Your score: @assignment.UserProgress.TotalScore/@assignment.UserProgress.MaxScore (@assignment.UserProgress.ScorePercentage.ToString("F1")%)</p>
+                        <p>Completed on: @assignment.UserProgress.CompletedAt?.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                }
+                else if (assignment.UserProgress?.Status == "InProgress")
+                {
+                    <div class="alert alert-warning">
+                        <h5>Assignment in Progress</h5>
+                        <p>Started on: @assignment.UserProgress.StartedAt.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                }
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Quiz Questions</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (assignment.UserProgress?.Status == "Completed")
+                        {
+                            <!-- Show results -->
+                            @for (int i = 0; i < assignment.Quizzes.Count; i++)
+                            {
+                                var quiz = assignment.Quizzes[i];
+                                <div class="mb-3">
+                                    <h6>Question @(i + 1)</h6>
+                                    <p>@quiz.Question</p>
+                                    <div class="quiz-options">
+                                        @RenderOption("A", quiz.OptionA, quiz.SelectedAnswer, quiz.CorrectAnswer)
+                                        @RenderOption("B", quiz.OptionB, quiz.SelectedAnswer, quiz.CorrectAnswer)
+                                        @RenderOption("C", quiz.OptionC, quiz.SelectedAnswer, quiz.CorrectAnswer)
+                                        @RenderOption("D", quiz.OptionD, quiz.SelectedAnswer, quiz.CorrectAnswer)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (assignment.UserProgress?.Status == "InProgress" || assignment.UserProgress == null)
+                        {
+                            <!-- Show quiz form -->
+                            <form @onsubmit="SubmitQuiz" @onsubmit:preventDefault="true">
+                                @for (int i = 0; i < assignment.Quizzes.Count; i++)
+                                {
+                                    var quiz = assignment.Quizzes[i];
+                                    <div class="mb-3">
+                                        <h6>Question @(i + 1)</h6>
+                                        <p>@quiz.Question</p>
+                                        <div class="quiz-options">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="quiz_@quiz.Id" 
+                                                       value="A" @onchange="@(e => UpdateAnswer(quiz.Id, "A"))" />
+                                                <label class="form-check-label">A. @quiz.OptionA</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="quiz_@quiz.Id" 
+                                                       value="B" @onchange="@(e => UpdateAnswer(quiz.Id, "B"))" />
+                                                <label class="form-check-label">B. @quiz.OptionB</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="quiz_@quiz.Id" 
+                                                       value="C" @onchange="@(e => UpdateAnswer(quiz.Id, "C"))" />
+                                                <label class="form-check-label">C. @quiz.OptionC</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="quiz_@quiz.Id" 
+                                                       value="D" @onchange="@(e => UpdateAnswer(quiz.Id, "D"))" />
+                                                <label class="form-check-label">D. @quiz.OptionD</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                
+                                <button type="submit" class="btn btn-success" disabled="@(!CanSubmit())">
+                                    Submit Quiz
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    
+    private AssignmentDto? assignment;
+    private string? userId;
+    private Dictionary<int, string> answers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (!string.IsNullOrEmpty(userId))
+        {
+            assignment = await AssignmentService.GetAssignmentDetailsAsync(Id, userId);
+            
+            // If assignment exists but no progress, start it
+            if (assignment != null && assignment.UserProgress == null)
+            {
+                await AssignmentService.StartAssignmentAsync(Id, userId);
+                assignment = await AssignmentService.GetAssignmentDetailsAsync(Id, userId);
+            }
+        }
+    }
+
+    private void UpdateAnswer(int quizId, string answer)
+    {
+        answers[quizId] = answer;
+    }
+
+    private bool CanSubmit()
+    {
+        return assignment != null && answers.Count == assignment.Quizzes.Count;
+    }
+
+    private async Task SubmitQuiz()
+    {
+        if (assignment == null || string.IsNullOrEmpty(userId)) return;
+
+        var submitDto = new SubmitQuizDto
+        {
+            AssignmentId = Id,
+            Answers = answers.Select(a => new QuizSubmissionDto
+            {
+                QuizId = a.Key,
+                SelectedAnswer = a.Value
+            }).ToList()
+        };
+
+        try
+        {
+            await AssignmentService.SubmitQuizAsync(submitDto, userId);
+            // Refresh assignment data
+            assignment = await AssignmentService.GetAssignmentDetailsAsync(Id, userId);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            // Handle error - could add a notification system here
+            Console.WriteLine($"Error submitting quiz: {ex.Message}");
+        }
+    }
+
+    private RenderFragment RenderOption(string optionLetter, string optionText, string? selectedAnswer, string? correctAnswer)
+    {
+        return @<div class="form-check">
+            <span class="@GetOptionClass(optionLetter, selectedAnswer, correctAnswer)">
+                @optionLetter. @optionText
+                @if (optionLetter == correctAnswer)
+                {
+                    <span class="badge bg-success ms-2">Correct</span>
+                }
+                @if (optionLetter == selectedAnswer && optionLetter != correctAnswer)
+                {
+                    <span class="badge bg-danger ms-2">Your Answer</span>
+                }
+            </span>
+        </div>;
+    }
+
+    private string GetOptionClass(string optionLetter, string? selectedAnswer, string? correctAnswer)
+    {
+        if (optionLetter == correctAnswer)
+            return "text-success fw-bold";
+        if (optionLetter == selectedAnswer && optionLetter != correctAnswer)
+            return "text-danger";
+        return "";
+    }
+}

@@ -1,0 +1,101 @@
+@page "/assignments"
+@using MiniLMS.DTOs
+@using MiniLMS.Services
+@using System.Security.Claims
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject IAssignmentService AssignmentService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Assignments</PageTitle>
+
+<h1>My Assignments</h1>
+
+@if (assignments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        @foreach (var assignment in assignments)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@assignment.Title</h5>
+                        <p class="card-text">@assignment.Description</p>
+                        <p class="text-muted">
+                            Created: @assignment.CreatedAt.ToString("MMM dd, yyyy")
+                            @if (assignment.DueDate.HasValue)
+                            {
+                                <text><br />Due: @assignment.DueDate.Value.ToString("MMM dd, yyyy")</text>
+                            }
+                        </p>
+                        
+                        @if (assignment.UserProgress != null)
+                        {
+                            <div class="progress mb-2">
+                                <div class="progress-bar @GetProgressBarClass(assignment.UserProgress.Status)" 
+                                     role="progressbar" 
+                                     style="width: @(assignment.UserProgress.Status == "Completed" ? "100" : assignment.UserProgress.Status == "InProgress" ? "50" : "0")%">
+                                    @assignment.UserProgress.Status
+                                </div>
+                            </div>
+                            
+                            @if (assignment.UserProgress.Status == "Completed")
+                            {
+                                <p class="text-success">
+                                    Score: @assignment.UserProgress.TotalScore/@assignment.UserProgress.MaxScore 
+                                    (@assignment.UserProgress.ScorePercentage.ToString("F1")%)
+                                </p>
+                            }
+                        }
+                        
+                        <a href="/assignments/@assignment.Id" class="btn btn-primary">
+                            @if (assignment.UserProgress == null)
+                            {
+                                <text>Start Assignment</text>
+                            }
+                            else if (assignment.UserProgress.Status == "Completed")
+                            {
+                                <text>View Results</text>
+                            }
+                            else
+                            {
+                                <text>Continue</text>
+                            }
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<AssignmentDto>? assignments;
+    private string? userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (!string.IsNullOrEmpty(userId))
+        {
+            assignments = await AssignmentService.GetActiveAssignmentsAsync(userId);
+        }
+    }
+
+    private string GetProgressBarClass(string status)
+    {
+        return status switch
+        {
+            "Completed" => "bg-success",
+            "InProgress" => "bg-warning",
+            "NotStarted" => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

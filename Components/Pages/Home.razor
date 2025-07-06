@@ -1,0 +1,84 @@
+﻿@page "/"
+
+<PageTitle>Mini LMS - Home</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+                <h1 class="display-4">Welcome to Mini LMS</h1>
+                <p class="lead">Your Learning Management System for assignments, quizzes, and progress tracking.</p>
+                <hr class="my-4">
+                <p>Get started by viewing your assignments or checking your progress.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Assignments</h5>
+                    <p class="card-text">View and complete your learning assignments with integrated quizzes.</p>
+                    <a href="/assignments" class="btn btn-primary">View Assignments</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Progress</h5>
+                    <p class="card-text">Track your learning progress and view your quiz results.</p>
+                    <a href="/progress" class="btn btn-success">View Progress</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Features</h5>
+                    <p class="card-text">
+                        • Interactive assignments with materials<br>
+                        • 5-question quizzes (20 points each)<br>
+                        • Progress tracking and scoring<br>
+                        • Manager dashboard for team oversight
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>How to Use Mini LMS</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>For Learners:</h6>
+                            <ol>
+                                <li>Browse available assignments in the <strong>Assignments</strong> section</li>
+                                <li>Click on an assignment to view learning materials</li>
+                                <li>Complete the 5-question quiz to finish the assignment</li>
+                                <li>Check your progress and scores in the <strong>Progress</strong> section</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>For Managers:</h6>
+                            <ol>
+                                <li>Create assignments for your team using the API endpoints</li>
+                                <li>Monitor team progress in the <strong>Progress</strong> section</li>
+                                <li>View detailed reports of assignment completions</li>
+                                <li>Track team performance and learning outcomes</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

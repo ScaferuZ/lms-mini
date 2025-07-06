@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css",
+      "PackagePath": "staticwebassets/MiniLMS.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.MiniLMS.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.MiniLMS.props",
+      "PackagePath": "build\\MiniLMS.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.MiniLMS.props",
+      "PackagePath": "buildMultiTargeting\\MiniLMS.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.MiniLMS.props",
+      "PackagePath": "buildTransitive\\MiniLMS.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,199 @@
+@page "/progress"
+@using MiniLMS.DTOs
+@using MiniLMS.Services
+@using System.Security.Claims
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject IProgressService ProgressService
+@inject IUserService UserService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Progress Report</PageTitle>
+
+<h1>Progress Report</h1>
+
+@if (isManager)
+{
+    <ul class="nav nav-tabs" id="progressTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="my-progress-tab" data-bs-toggle="tab" data-bs-target="#my-progress" type="button" role="tab">
+                My Progress
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="team-progress-tab" data-bs-toggle="tab" data-bs-target="#team-progress" type="button" role="tab">
+                Team Progress
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="progressTabsContent">
+        <div class="tab-pane fade show active" id="my-progress" role="tabpanel">
+            <div class="mt-3">
+                @RenderMyProgress()
+            </div>
+        </div>
+        <div class="tab-pane fade" id="team-progress" role="tabpanel">
+            <div class="mt-3">
+                @RenderTeamProgress()
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @RenderMyProgress()
+}
+
+@code {
+    private IEnumerable<AssignmentProgressDto>? myProgress;
+    private IEnumerable<AssignmentProgressDto>? teamProgress;
+    private string? userId;
+    private bool isManager = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (!string.IsNullOrEmpty(userId))
+        {
+            myProgress = await ProgressService.GetUserProgressesAsync(userId);
+            isManager = await UserService.IsManagerAsync(userId);
+            
+            if (isManager)
+            {
+                teamProgress = await ProgressService.GetSubordinateProgressesAsync(userId);
+            }
+        }
+    }
+
+    private RenderFragment RenderMyProgress()
+    {
+        return @<div>
+            <h3>My Assignment Progress</h3>
+            @if (myProgress == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else if (!myProgress.Any())
+            {
+                <p>No assignments completed yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Assignment</th>
+                                <th>Started</th>
+                                <th>Completed</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var progress in myProgress)
+                            {
+                                <tr>
+                                    <td>Assignment #@progress.AssignmentId</td>
+                                    <td>@progress.StartedAt.ToString("MMM dd, yyyy")</td>
+                                    <td>@(progress.CompletedAt?.ToString("MMM dd, yyyy") ?? "-")</td>
+                                    <td>
+                                        @if (progress.Status == "Completed")
+                                        {
+                                            <span class="badge bg-success">
+                                                @progress.TotalScore/@progress.MaxScore (@progress.ScorePercentage.ToString("F1")%)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge @GetStatusBadgeClass(progress.Status)">
+                                            @progress.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>;
+    }
+
+    private RenderFragment RenderTeamProgress()
+    {
+        return @<div>
+            <h3>Team Assignment Progress</h3>
+            @if (teamProgress == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else if (!teamProgress.Any())
+            {
+                <p>No team member progress to display.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Team Member</th>
+                                <th>Assignment</th>
+                                <th>Started</th>
+                                <th>Completed</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var progress in teamProgress)
+                            {
+                                <tr>
+                                    <td>@progress.UserFullName (@progress.UserName)</td>
+                                    <td>Assignment #@progress.AssignmentId</td>
+                                    <td>@progress.StartedAt.ToString("MMM dd, yyyy")</td>
+                                    <td>@(progress.CompletedAt?.ToString("MMM dd, yyyy") ?? "-")</td>
+                                    <td>
+                                        @if (progress.Status == "Completed")
+                                        {
+                                            <span class="badge bg-success">
+                                                @progress.TotalScore/@progress.MaxScore (@progress.ScorePercentage.ToString("F1")%)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge @GetStatusBadgeClass(progress.Status)">
+                                            @progress.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>;
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Completed" => "bg-success",
+            "InProgress" => "bg-warning text-dark",
+            "NotStarted" => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}
