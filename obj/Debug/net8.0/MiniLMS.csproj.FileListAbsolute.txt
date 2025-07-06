@@ -180,3 +180,4 @@
 /Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/MiniLMS.pdb
 /Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/MiniLMS.genruntimeconfig.cache
 /Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/ref/MiniLMS.dll
+/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/MiniLMS.sourcelink.json

@@ -47,7 +47,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(qa => qa.Quiz)
             .WithMany(q => q.QuizAnswers)
             .HasForeignKey(qa => qa.QuizId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<QuizAnswer>()
             .HasOne(qa => qa.AssignmentProgress)

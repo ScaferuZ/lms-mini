@@ -1,13 +1,14 @@
-﻿@page "/auth"
+﻿@page "/dashboard"
 
 @using Microsoft.AspNetCore.Authorization
 
 @attribute [Authorize]
 
-<PageTitle>Auth</PageTitle>
+<PageTitle>Dashboard - Mini LMS</PageTitle>
 
-<h1>You are authenticated</h1>
+<h1>Dashboard</h1>
 
 <AuthorizeView>
-    Hello @context.User.Identity?.Name!
+    <p>Welcome back, <strong>@context.User.Identity?.Name</strong>!</p>
+    <p>You are successfully authenticated to Mini LMS.</p>
 </AuthorizeView>
