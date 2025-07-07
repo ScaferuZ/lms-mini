@@ -23,6 +23,9 @@ public class DatabaseSeeder
         
         // Create sample assignments if they don't exist
         await CreateSampleAssignmentsAsync();
+        
+        // Create sample assignment progress
+        await CreateSampleProgressAsync();
     }
 
     private async Task CreateSampleUsersAsync()
@@ -358,6 +361,138 @@ public class DatabaseSeeder
                 };
                 
                 _context.Quizzes.AddRange(quizzes);
+            }
+        }
+        
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task CreateSampleProgressAsync()
+    {
+        // Get users
+        var learnerUser = await _userManager.FindByEmailAsync("learner@minilms.com");
+        var learnerUser2 = await _userManager.FindByEmailAsync("learner2@minilms.com");
+        var learnerUser3 = await _userManager.FindByEmailAsync("learner3@minilms.com");
+        
+        // Get assignments
+        var assignments = await _context.Assignments.ToListAsync();
+        
+        if (learnerUser != null && assignments.Any())
+        {
+            // Create progress for learner@minilms.com
+            foreach (var assignment in assignments.Take(2)) // Complete first 2 assignments
+            {
+                var existingProgress = await _context.AssignmentProgresses
+                    .FirstOrDefaultAsync(ap => ap.UserId == learnerUser.Id && ap.AssignmentId == assignment.Id);
+                
+                if (existingProgress == null)
+                {
+                    var progress = new AssignmentProgress
+                    {
+                        UserId = learnerUser.Id,
+                        AssignmentId = assignment.Id,
+                        StartedAt = DateTime.UtcNow.AddDays(-7 + assignment.Id),
+                        CompletedAt = DateTime.UtcNow.AddDays(-5 + assignment.Id), // Stagger completion dates
+                        TotalScore = 80 + (assignment.Id * 5), // Varying scores
+                        Status = ProgressStatus.Completed,
+                        CreatedAt = DateTime.UtcNow.AddDays(-7 + assignment.Id),
+                        QuizAnswers = new List<QuizAnswer>()
+                    };
+                    
+                    // Get quizzes for this assignment
+                    var quizzes = await _context.Quizzes
+                        .Where(q => q.AssignmentId == assignment.Id)
+                        .OrderBy(q => q.OrderIndex)
+                        .ToListAsync();
+                    
+                    // Create quiz answers
+                    foreach (var quiz in quizzes)
+                    {
+                        var answer = new QuizAnswer
+                        {
+                            QuizId = quiz.Id,
+                            SelectedAnswer = quiz.CorrectAnswer, // All correct for now
+                            IsCorrect = true,
+                            AnsweredAt = DateTime.UtcNow.AddDays(-5 + assignment.Id),
+                            AssignmentProgress = progress
+                        };
+                        progress.QuizAnswers.Add(answer);
+                    }
+                    
+                    _context.AssignmentProgresses.Add(progress);
+                }
+            }
+        }
+        
+        if (learnerUser2 != null && assignments.Any())
+        {
+            // Create progress for learner2@minilms.com
+            var assignment = assignments.First();
+            var existingProgress = await _context.AssignmentProgresses
+                .FirstOrDefaultAsync(ap => ap.UserId == learnerUser2.Id && ap.AssignmentId == assignment.Id);
+            
+            if (existingProgress == null)
+            {
+                var progress = new AssignmentProgress
+                {
+                    UserId = learnerUser2.Id,
+                    AssignmentId = assignment.Id,
+                    StartedAt = DateTime.UtcNow.AddDays(-5),
+                    CompletedAt = DateTime.UtcNow.AddDays(-3),
+                    TotalScore = 60, // Lower score
+                    Status = ProgressStatus.Completed,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5),
+                    QuizAnswers = new List<QuizAnswer>()
+                };
+                
+                // Get quizzes for this assignment
+                var quizzes = await _context.Quizzes
+                    .Where(q => q.AssignmentId == assignment.Id)
+                    .OrderBy(q => q.OrderIndex)
+                    .ToListAsync();
+                
+                // Create quiz answers - mix of correct and incorrect
+                for (int i = 0; i < quizzes.Count; i++)
+                {
+                    var quiz = quizzes[i];
+                    var isCorrect = i < 3; // First 3 correct, last 2 incorrect
+                    var answer = new QuizAnswer
+                    {
+                        QuizId = quiz.Id,
+                        SelectedAnswer = isCorrect ? quiz.CorrectAnswer : "A", // Wrong answer if not correct
+                        IsCorrect = isCorrect,
+                        AnsweredAt = DateTime.UtcNow.AddDays(-3),
+                        AssignmentProgress = progress
+                    };
+                    progress.QuizAnswers.Add(answer);
+                }
+                
+                _context.AssignmentProgresses.Add(progress);
+            }
+        }
+        
+        if (learnerUser3 != null && assignments.Any())
+        {
+            // Create incomplete progress for learner3@minilms.com
+            var assignment = assignments.First();
+            var existingProgress = await _context.AssignmentProgresses
+                .FirstOrDefaultAsync(ap => ap.UserId == learnerUser3.Id && ap.AssignmentId == assignment.Id);
+            
+            if (existingProgress == null)
+            {
+                var progress = new AssignmentProgress
+                {
+                    UserId = learnerUser3.Id,
+                    AssignmentId = assignment.Id,
+                    StartedAt = DateTime.UtcNow.AddDays(-2),
+                    CompletedAt = null,
+                    TotalScore = 0,
+                    Status = ProgressStatus.InProgress,
+                    CreatedAt = DateTime.UtcNow.AddDays(-2),
+                    QuizAnswers = new List<QuizAnswer>()
+                };
+                
+                _context.AssignmentProgresses.Add(progress);
             }
         }
         

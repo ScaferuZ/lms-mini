@@ -157,7 +157,7 @@
         catch (Exception ex)
         {
             // Handle DbContext issues gracefully - don't redirect, just show error
-            errorMessage = "Unable to load assignments. Please try refreshing the page.";
+            errorMessage = $"Unable to load assignments. Please try refreshing the page. Error: {ex.Message}";
             assignments = new List<AssignmentDto>(); // Empty list to prevent null reference
         }
         finally

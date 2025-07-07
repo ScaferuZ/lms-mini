@@ -20,30 +20,9 @@
 
 @if (isManager)
 {
-    <ul class="nav nav-tabs" id="progressTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="my-progress-tab" data-bs-toggle="tab" data-bs-target="#my-progress" type="button" role="tab">
-                My Progress
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="team-progress-tab" data-bs-toggle="tab" data-bs-target="#team-progress" type="button" role="tab">
-                Team Progress
-            </button>
-        </li>
-    </ul>
-
-    <div class="tab-content" id="progressTabsContent">
-        <div class="tab-pane fade show active" id="my-progress" role="tabpanel">
-            <div class="mt-3">
-                @RenderMyProgress()
-            </div>
-        </div>
-        <div class="tab-pane fade" id="team-progress" role="tabpanel">
-            <div class="mt-3">
-                @RenderTeamProgress()
-            </div>
-        </div>
+    <h3>Team Progress</h3>
+    <div class="mt-3">
+        @RenderTeamProgress()
     </div>
 }
 else
@@ -77,12 +56,15 @@ else
                     return;
                 }
                 
-                myProgress = await ProgressService.GetUserProgressesAsync(userId);
                 isManager = await UserService.IsManagerAsync(userId);
                 
                 if (isManager)
                 {
                     teamProgress = await ProgressService.GetSubordinateProgressesAsync(userId);
+                }
+                else
+                {
+                    myProgress = await ProgressService.GetUserProgressesAsync(userId);
                 }
             }
             catch (Exception)
@@ -154,7 +136,6 @@ else
     private RenderFragment RenderTeamProgress()
     {
         return @<div>
-            <h3>Team Assignment Progress</h3>
             @if (teamProgress == null)
             {
                 <p><em>Loading...</em></p>
