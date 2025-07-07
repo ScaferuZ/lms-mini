@@ -1,91 +1,242 @@
-﻿@page "/"
+@page "/"
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using MiniLMS.Data
 @inject NavigationManager NavigationManager
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Mini LMS - Home</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
-                        <h1 class="display-4">Welcome to Mini LMS</h1>
-                        <p class="lead">Your Learning Management System for assignments, quizzes, and progress tracking.</p>
-                        <hr class="my-4">
-                        <p>Get started by viewing your assignments or checking your progress.</p>
-                    </div>
+        @if (isLoadingUser)
+        {
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">📚 Assignments</h5>
-                            <p class="card-text">View and complete your learning assignments with integrated quizzes.</p>
-                            <a href="/assignments" class="btn btn-primary">View Assignments</a>
+        }
+        else if (currentUser?.Role == UserRole.Learner)
+        {
+            @* Show learner-specific home page content *@
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+                            <h1 class="display-4">Welcome to Mini LMS</h1>
+                            <p class="lead">Your Learning Management System for assignments and progress tracking.</p>
+                            <hr class="my-4">
+                            <p>Start your learning journey by viewing your assignments.</p>
+                            <a href="/assignments" class="btn btn-light btn-lg">View My Assignments</a>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">📊 Progress</h5>
-                            <p class="card-text">Track your learning progress and view your quiz results.</p>
-                            <a href="/progress" class="btn btn-success">View Progress</a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📚 Assignments</h5>
+                                <p class="card-text">View and complete your learning assignments with integrated quizzes.</p>
+                                <a href="/assignments" class="btn btn-primary">View Assignments</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">🎯 Learning Features</h5>
+                                <p class="card-text">
+                                    • Interactive assignments with materials<br>
+                                    • 5-question quizzes (20 points each)<br>
+                                    • Progress tracking and scoring<br>
+                                    • Complete assignments at your own pace
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">🎯 Features</h5>
-                            <p class="card-text">
-                                • Interactive assignments with materials<br>
-                                • 5-question quizzes (20 points each)<br>
-                                • Progress tracking and scoring<br>
-                                • Manager dashboard for team oversight
-                            </p>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>How to Use Mini LMS</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>For Learners:</h6>
+                                <ol>
+                                    <li>Browse available assignments in the <strong>Assignments</strong> section</li>
+                                    <li>Click on an assignment to view learning materials</li>
+                                    <li>Complete the 5-question quiz to finish the assignment</li>
+                                    <li>Track your progress and scores</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>How to Use Mini LMS</h5>
+        }
+        else if (currentUser?.Role == UserRole.Manager)
+        {
+            @* Show manager-specific home page content *@
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="jumbotron bg-success text-white p-5 rounded mb-4">
+                            <h1 class="display-4">Manager Dashboard</h1>
+                            <p class="lead">Monitor your team's learning progress and performance.</p>
+                            <hr class="my-4">
+                            <p>View your team's progress and manage their learning journey.</p>
+                            <a href="/progress" class="btn btn-light btn-lg">View Team Progress</a>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h6>For Learners:</h6>
-                                    <ol>
-                                        <li>Browse available assignments in the <strong>Assignments</strong> section</li>
-                                        <li>Click on an assignment to view learning materials</li>
-                                        <li>Complete the 5-question quiz to finish the assignment</li>
-                                        <li>Check your progress and scores in the <strong>Progress</strong> section</li>
-                                    </ol>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6>For Managers:</h6>
-                                    <ol>
-                                        <li>Create assignments for your team using the API endpoints</li>
-                                        <li>Monitor team progress in the <strong>Progress</strong> section</li>
-                                        <li>View detailed reports of assignment completions</li>
-                                        <li>Track team performance and learning outcomes</li>
-                                    </ol>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📊 Team Progress</h5>
+                                <p class="card-text">Track your team's learning progress and view their quiz results.</p>
+                                <a href="/progress" class="btn btn-success">View Team Progress</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">👥 Management Features</h5>
+                                <p class="card-text">
+                                    • Monitor subordinate progress<br>
+                                    • View team completion rates<br>
+                                    • Track learning outcomes<br>
+                                    • Generate performance insights
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Manager Features</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>For Managers:</h6>
+                                <ol>
+                                    <li>Monitor your team's progress in the <strong>Progress</strong> section</li>
+                                    <li>View detailed reports of your subordinates' assignment completions</li>
+                                    <li>Track team performance and learning outcomes</li>
+                                    <li>Access team-specific analytics and insights</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (currentUser?.Role == UserRole.Admin)
+        {
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+                            <h1 class="display-4">Welcome to Mini LMS</h1>
+                            <p class="lead">Your Learning Management System for assignments, quizzes, and progress tracking.</p>
+                            <hr class="my-4">
+                            <p>Administrative dashboard for managing the learning system.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📚 Assignments</h5>
+                                <p class="card-text">View and manage all assignments in the system.</p>
+                                <a href="/assignments" class="btn btn-primary">View Assignments</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📊 System Progress</h5>
+                                <p class="card-text">Track all users' learning progress and view system-wide results.</p>
+                                <a href="/progress" class="btn btn-success">View Progress</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Admin Features</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Assignment Management:</h6>
+                                        <ul>
+                                            <li>Create and manage assignments for all users</li>
+                                            <li>View assignment completion rates</li>
+                                            <li>Monitor quiz results and scores</li>
+                                            <li>Generate performance reports</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>User Management:</h6>
+                                        <ul>
+                                            <li>View all user progress and results</li>
+                                            <li>Manage organizational structure</li>
+                                            <li>Access system-wide analytics</li>
+                                            <li>Oversee learning outcomes</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            @* Fallback for unknown users or when role can't be determined *@
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-warning">
+                            <h4>Welcome to Mini LMS</h4>
+                            <p>Debug Information:</p>
+                            <ul>
+                                <li>Current User: @(currentUser?.Email ?? "null")</li>
+                                <li>Role: @(currentUser?.Role.ToString() ?? "null")</li>
+                                <li>First Name: @(currentUser?.FirstName ?? "null")</li>
+                                <li>Last Name: @(currentUser?.LastName ?? "null")</li>
+                            </ul>
+                            <p>Please try:</p>
+                            <ul>
+                                <li><a href="/assignments" class="alert-link">View Assignments</a> (for learners)</li>
+                                <li><a href="/progress" class="alert-link">View Progress</a> (for managers)</li>
+                                <li>Contact your administrator if you continue to have issues</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </Authorized>
     <NotAuthorized>
         @{
@@ -93,3 +244,50 @@
         }
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    private ApplicationUser? currentUser;
+    private bool isLoadingUser = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCurrentUser();
+    }
+
+    private async Task LoadCurrentUser()
+    {
+        try
+        {
+            isLoadingUser = true;
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            if (authState.User.Identity?.IsAuthenticated == true)
+            {
+                currentUser = await UserManager.GetUserAsync(authState.User);
+                // Debug logging
+                if (currentUser != null)
+                {
+                    Console.WriteLine($"User loaded: {currentUser.Email}, Role: {currentUser.Role}");
+                }
+                else
+                {
+                    Console.WriteLine("Current user is null after UserManager.GetUserAsync");
+                }
+            }
+            else
+            {
+                Console.WriteLine("User is not authenticated");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle potential DbContext issues gracefully
+            Console.WriteLine($"Error loading user: {ex.Message}");
+            currentUser = null;
+        }
+        finally
+        {
+            isLoadingUser = false;
+            StateHasChanged();
+        }
+    }
+}

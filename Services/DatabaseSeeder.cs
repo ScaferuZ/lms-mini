@@ -44,12 +44,13 @@ public class DatabaseSeeder
             await _userManager.CreateAsync(adminUser, "Admin123!");
         }
 
-        // Create Manager user
+        // Create Manager user with specific ID
         var managerUser = await _userManager.FindByEmailAsync("manager@minilms.com");
         if (managerUser == null)
         {
             managerUser = new ApplicationUser
             {
+                Id = "fe271428-fe11-4f33-a754-30be00e32b3e", // Set the specific manager ID
                 UserName = "manager@minilms.com",
                 Email = "manager@minilms.com",
                 FirstName = "Manager",
@@ -61,7 +62,7 @@ public class DatabaseSeeder
             await _userManager.CreateAsync(managerUser, "Manager123!");
         }
 
-        // Create Learner user
+        // Create Learner user assigned to the manager
         var learnerUser = await _userManager.FindByEmailAsync("learner@minilms.com");
         if (learnerUser == null)
         {
@@ -72,11 +73,52 @@ public class DatabaseSeeder
                 FirstName = "Learner",
                 LastName = "User",
                 Role = UserRole.Learner,
-                ManagerId = managerUser.Id,
+                ManagerId = "fe271428-fe11-4f33-a754-30be00e32b3e", // Explicitly set to manager's ID
                 CreatedAt = DateTime.UtcNow,
                 EmailConfirmed = true
             };
             await _userManager.CreateAsync(learnerUser, "Learner123!");
+        }
+        else if (string.IsNullOrEmpty(learnerUser.ManagerId))
+        {
+            // If learner exists but doesn't have a manager, assign them to the manager
+            learnerUser.ManagerId = "fe271428-fe11-4f33-a754-30be00e32b3e";
+            await _userManager.UpdateAsync(learnerUser);
+        }
+
+        // Create additional learner users for the same manager
+        var learnerUser2 = await _userManager.FindByEmailAsync("learner2@minilms.com");
+        if (learnerUser2 == null)
+        {
+            learnerUser2 = new ApplicationUser
+            {
+                UserName = "learner2@minilms.com",
+                Email = "learner2@minilms.com",
+                FirstName = "Jane",
+                LastName = "Smith",
+                Role = UserRole.Learner,
+                ManagerId = "fe271428-fe11-4f33-a754-30be00e32b3e", // Same manager
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
+            };
+            await _userManager.CreateAsync(learnerUser2, "Learner123!");
+        }
+
+        var learnerUser3 = await _userManager.FindByEmailAsync("learner3@minilms.com");
+        if (learnerUser3 == null)
+        {
+            learnerUser3 = new ApplicationUser
+            {
+                UserName = "learner3@minilms.com",
+                Email = "learner3@minilms.com",
+                FirstName = "Bob",
+                LastName = "Johnson",
+                Role = UserRole.Learner,
+                ManagerId = "fe271428-fe11-4f33-a754-30be00e32b3e", // Same manager
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
+            };
+            await _userManager.CreateAsync(learnerUser3, "Learner123!");
         }
     }
 

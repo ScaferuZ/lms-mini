@@ -1,14 +1,74 @@
 ﻿@page "/dashboard"
-
 @using Microsoft.AspNetCore.Authorization
-
+@using Microsoft.AspNetCore.Identity
+@using MiniLMS.Data
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 @attribute [Authorize]
 
 <PageTitle>Dashboard - Mini LMS</PageTitle>
 
-<h1>Dashboard</h1>
+@if (canAccessDashboard)
+{
+    <h1>Dashboard</h1>
 
-<AuthorizeView>
-    <p>Welcome back, <strong>@context.User.Identity?.Name</strong>!</p>
-    <p>You are successfully authenticated to Mini LMS.</p>
-</AuthorizeView>
+    <AuthorizeView>
+        <p>Welcome back, <strong>@context.User.Identity?.Name</strong>!</p>
+        <p>You are successfully authenticated to Mini LMS.</p>
+        
+        @if (currentUser?.Role == UserRole.Admin)
+        {
+            <div class="alert alert-info">
+                <h4>Admin Dashboard</h4>
+                <p>You have administrative access to the system.</p>
+            </div>
+        }
+        else if (currentUser?.Role == UserRole.Manager)
+        {
+            <div class="alert alert-success">
+                <h4>Manager Dashboard</h4>
+                <p>You can manage assignments and view team progress.</p>
+            </div>
+        }
+    </AuthorizeView>
+}
+else
+{
+    <div class="alert alert-warning">
+        <h4>Access Denied</h4>
+        <p>You don't have permission to access this dashboard.</p>
+        <a href="/assignments" class="btn btn-primary">Go to Assignments</a>
+    </div>
+}
+
+@code {
+    private ApplicationUser? currentUser;
+    private bool canAccessDashboard = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            try
+            {
+                currentUser = await UserManager.GetUserAsync(authState.User);
+                
+                // Only Managers and Admins can access dashboard
+                canAccessDashboard = currentUser?.Role == UserRole.Manager || currentUser?.Role == UserRole.Admin;
+                
+                if (!canAccessDashboard)
+                {
+                    NavigationManager.NavigateTo("/assignments");
+                }
+            }
+            catch (Exception)
+            {
+                // Handle DbContext issues gracefully
+                NavigationManager.NavigateTo("/assignments");
+            }
+        }
+    }
+}

@@ -123,3 +123,25 @@
         overflow-y: auto;
     }
 }
+
+.navigation-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.navigation-overlay .spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+.nav-scrollable {
+    position: relative;
+}

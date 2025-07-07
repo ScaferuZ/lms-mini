@@ -1,23 +1,64 @@
 @page "/assignments"
 @using MiniLMS.DTOs
 @using MiniLMS.Services
+@using MiniLMS.Data
+@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @rendermode InteractiveServer
 @attribute [Authorize]
 @inject IAssignmentService AssignmentService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
 
-<PageTitle>Assignments</PageTitle>
+<PageTitle>My Assignments - Mini LMS</PageTitle>
 
-<h1>My Assignments</h1>
-
-@if (assignments == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
+<div class="container-fluid">
     <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mb-2">Welcome to Mini LMS</h1>
+                    <p class="text-muted">Your learning assignments and progress</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <div>
+                <strong>Error:</strong> @errorMessage
+                <button class="btn btn-sm btn-outline-danger ms-2" @onclick="LoadAssignments">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading assignments...</span>
+            </div>
+        </div>
+    }
+    else if (assignments == null || !assignments.Any())
+    {
+        <div class="text-center py-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">No Assignments Yet</h5>
+                    <p class="card-text">You don't have any assignments at the moment. Check back later!</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
         @foreach (var assignment in assignments)
         {
             <div class="col-md-6 mb-4">
@@ -70,21 +111,55 @@ else
                 </div>
             </div>
         }
-    </div>
-}
+        </div>
+    }
+</div>
 
 @code {
     private IEnumerable<AssignmentDto>? assignments;
     private string? userId;
+    private string? errorMessage;
+    private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        if (!string.IsNullOrEmpty(userId))
+        await LoadAssignments();
+    }
+
+    private async Task LoadAssignments()
+    {
+        try
         {
-            assignments = await AssignmentService.GetActiveAssignmentsAsync(userId);
+            isLoading = true;
+            errorMessage = null;
+            
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var currentUser = await UserManager.GetUserAsync(authState.User);
+                
+                // Check if user has permission to access this page
+                if (currentUser?.Role == UserRole.Manager)
+                {
+                    NavigationManager.NavigateTo("/progress");
+                    return;
+                }
+                
+                assignments = await AssignmentService.GetActiveAssignmentsAsync(userId);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle DbContext issues gracefully - don't redirect, just show error
+            errorMessage = "Unable to load assignments. Please try refreshing the page.";
+            assignments = new List<AssignmentDto>(); // Empty list to prevent null reference
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
         }
     }
 
