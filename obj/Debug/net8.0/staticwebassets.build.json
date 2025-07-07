@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "g/yFNAfcSOBJVLduMseJP6/mZ4FHqcd0DwooE7OSDyI=",
+  "Hash": "00EswDumlq67oUjkXxJGvIjGAA1P90jDd0F6xAom7GI=",
   "Source": "MiniLMS",
   "BasePath": "_content/MiniLMS",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "MiniLMS/wwwroot",
       "Source": "MiniLMS",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/wwwroot/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/wwwroot/",
       "BasePath": "_content/MiniLMS",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/bundle/MiniLMS.styles.css",
+      "Identity": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/bundle/MiniLMS.styles.css",
       "SourceId": "MiniLMS",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/bundle/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/bundle/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "MiniLMS.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/bundle/MiniLMS.styles.css"
+      "OriginalItemSpec": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/bundle/MiniLMS.styles.css"
     },
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css",
+      "Identity": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css",
       "SourceId": "MiniLMS",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/projectbundle/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "MiniLMS.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css"
+      "OriginalItemSpec": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css"
     },
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/wwwroot/app.css",
+      "Identity": "/home/scaf/Documents/code/lms-mini/wwwroot/app.css",
       "SourceId": "MiniLMS",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/wwwroot/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/wwwroot/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot/app.css"
     },
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css",
+      "Identity": "/home/scaf/Documents/code/lms-mini/wwwroot/bootstrap/bootstrap.min.css",
       "SourceId": "MiniLMS",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/wwwroot/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/wwwroot/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Identity": "/home/scaf/Documents/code/lms-mini/wwwroot/bootstrap/bootstrap.min.css.map",
       "SourceId": "MiniLMS",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/wwwroot/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/wwwroot/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/fruz/Documents/projects/mini-lms/wwwroot/favicon.png",
+      "Identity": "/home/scaf/Documents/code/lms-mini/wwwroot/favicon.png",
       "SourceId": "MiniLMS",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/fruz/Documents/projects/mini-lms/wwwroot/",
+      "ContentRoot": "/home/scaf/Documents/code/lms-mini/wwwroot/",
       "BasePath": "_content/MiniLMS",
       "RelativePath": "favicon.png",
       "AssetKind": "All",

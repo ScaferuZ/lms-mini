@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/fruz/Documents/projects/mini-lms/MiniLMS.csproj": {}
+    "/home/scaf/Documents/code/lms-mini/MiniLMS.csproj": {}
   },
   "projects": {
-    "/Users/fruz/Documents/projects/mini-lms/MiniLMS.csproj": {
+    "/home/scaf/Documents/code/lms-mini/MiniLMS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/fruz/Documents/projects/mini-lms/MiniLMS.csproj",
+        "projectUniqueName": "/home/scaf/Documents/code/lms-mini/MiniLMS.csproj",
         "projectName": "MiniLMS",
-        "projectPath": "/Users/fruz/Documents/projects/mini-lms/MiniLMS.csproj",
-        "packagesPath": "/Users/fruz/.nuget/packages/",
-        "outputPath": "/Users/fruz/Documents/projects/mini-lms/obj/",
+        "projectPath": "/home/scaf/Documents/code/lms-mini/MiniLMS.csproj",
+        "packagesPath": "/home/scaf/.nuget/packages/",
+        "outputPath": "/home/scaf/Documents/code/lms-mini/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/fruz/.nuget/NuGet/NuGet.Config"
+          "/home/scaf/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -99,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

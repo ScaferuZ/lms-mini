@@ -9,207 +9,207 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MiniLMS
 build_property.RootNamespace = MiniLMS
-build_property.ProjectDir = /Users/fruz/Documents/projects/mini-lms/
+build_property.ProjectDir = /home/scaf/Documents/code/lms-mini/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/fruz/Documents/projects/mini-lms
+build_property.MSBuildProjectDirectory = /home/scaf/Documents/code/lms-mini
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/AccessDenied.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/AccessDenied.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0FjY2Vzc0RlbmllZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ConfirmEmail.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ConfirmEmail.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0NvbmZpcm1FbWFpbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ConfirmEmailChange.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ConfirmEmailChange.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0NvbmZpcm1FbWFpbENoYW5nZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ExternalLogin.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ExternalLogin.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0V4dGVybmFsTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ForgotPassword.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ForgotPassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ZvcmdvdFBhc3N3b3JkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ForgotPasswordConfirmation.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ForgotPasswordConfirmation.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ZvcmdvdFBhc3N3b3JkQ29uZmlybWF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/InvalidPasswordReset.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/InvalidPasswordReset.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ludmFsaWRQYXNzd29yZFJlc2V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/InvalidUser.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/InvalidUser.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ludmFsaWRVc2VyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Lockout.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Lockout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvY2tvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Login.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/LoginWith2fa.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/LoginWith2fa.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luV2l0aDJmYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/LoginWithRecoveryCode.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/LoginWithRecoveryCode.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luV2l0aFJlY292ZXJ5Q29kZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/ChangePassword.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/ChangePassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9DaGFuZ2VQYXNzd29yZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/DeletePersonalData.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/DeletePersonalData.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9EZWxldGVQZXJzb25hbERhdGEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/Disable2fa.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/Disable2fa.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9EaXNhYmxlMmZhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/Email.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/Email.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FbWFpbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/EnableAuthenticator.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/EnableAuthenticator.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FbmFibGVBdXRoZW50aWNhdG9yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/ExternalLogins.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/ExternalLogins.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FeHRlcm5hbExvZ2lucy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/GenerateRecoveryCodes.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/GenerateRecoveryCodes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9HZW5lcmF0ZVJlY292ZXJ5Q29kZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/Index.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9JbmRleC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/PersonalData.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/PersonalData.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9QZXJzb25hbERhdGEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/ResetAuthenticator.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/ResetAuthenticator.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9SZXNldEF1dGhlbnRpY2F0b3IucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/SetPassword.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/SetPassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9TZXRQYXNzd29yZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/TwoFactorAuthentication.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/TwoFactorAuthentication.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9Ud29GYWN0b3JBdXRoZW50aWNhdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Manage/_Imports.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Manage/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9fSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/Register.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1JlZ2lzdGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/RegisterConfirmation.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/RegisterConfirmation.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1JlZ2lzdGVyQ29uZmlybWF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ResendEmailConfirmation.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ResendEmailConfirmation.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2VuZEVtYWlsQ29uZmlybWF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ResetPassword.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ResetPassword.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2V0UGFzc3dvcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/ResetPasswordConfirmation.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/ResetPasswordConfirmation.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2V0UGFzc3dvcmRDb25maXJtYXRpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Pages/_Imports.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Pages/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL19JbXBvcnRzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/AccountLayout.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/AccountLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9BY2NvdW50TGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/ExternalLoginPicker.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/ExternalLoginPicker.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9FeHRlcm5hbExvZ2luUGlja2VyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/ManageLayout.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/ManageLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9NYW5hZ2VMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/ManageNavMenu.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/ManageNavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9NYW5hZ2VOYXZNZW51LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/RedirectToLogin.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/RedirectToLogin.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9SZWRpcmVjdFRvTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/ShowRecoveryCodes.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/ShowRecoveryCodes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9TaG93UmVjb3ZlcnlDb2Rlcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Account/Shared/StatusMessage.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Account/Shared/StatusMessage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9TdGF0dXNNZXNzYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/App.razor]
+[/home/scaf/Documents/code/lms-mini/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/AssignmentDetails.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/AssignmentDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Bc3NpZ25tZW50RGV0YWlscy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/Assignments.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/Assignments.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Bc3NpZ25tZW50cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/Auth.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/Auth.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BdXRoLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/Error.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/Home.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Pages/Progress.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Pages/Progress.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Qcm9ncmVzcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Routes.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/_Imports.razor]
+[/home/scaf/Documents/code/lms-mini/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Layout/MainLayout.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-1uoz1ch8v3
 
-[/Users/fruz/Documents/projects/mini-lms/Components/Layout/NavMenu.razor]
+[/home/scaf/Documents/code/lms-mini/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9pj3ux0nl6

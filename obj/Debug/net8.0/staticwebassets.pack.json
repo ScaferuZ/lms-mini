@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "/Users/fruz/Documents/projects/mini-lms/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css",
+      "Id": "/home/scaf/Documents/code/lms-mini/obj/Debug/net8.0/scopedcss/projectbundle/MiniLMS.bundle.scp.css",
       "PackagePath": "staticwebassets/MiniLMS.bundle.scp.css"
     },
     {
-      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/app.css",
+      "Id": "/home/scaf/Documents/code/lms-mini/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },
     {
-      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css",
+      "Id": "/home/scaf/Documents/code/lms-mini/wwwroot/bootstrap/bootstrap.min.css",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
     },
     {
-      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Id": "/home/scaf/Documents/code/lms-mini/wwwroot/bootstrap/bootstrap.min.css.map",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Id": "/Users/fruz/Documents/projects/mini-lms/wwwroot/favicon.png",
+      "Id": "/home/scaf/Documents/code/lms-mini/wwwroot/favicon.png",
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
