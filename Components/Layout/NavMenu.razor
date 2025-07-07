@@ -1,9 +1,11 @@
 ﻿@implements IDisposable
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @using MiniLMS.Data
 @inject NavigationManager NavigationManager
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -101,7 +103,13 @@
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             if (authState.User.Identity?.IsAuthenticated == true)
             {
-                currentUser = await UserManager.GetUserAsync(authState.User);
+                // Use DbContextFactory to avoid concurrency issues
+                using var context = await DbContextFactory.CreateDbContextAsync();
+                var userId = UserManager.GetUserId(authState.User);
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    currentUser = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                }
             }
         }
         catch (Exception)

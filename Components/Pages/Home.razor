@@ -1,10 +1,12 @@
 @page "/"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @using MiniLMS.Data
 @inject NavigationManager NavigationManager
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 
 <PageTitle>Mini LMS - Home</PageTitle>
 
@@ -262,15 +264,25 @@
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             if (authState.User.Identity?.IsAuthenticated == true)
             {
-                currentUser = await UserManager.GetUserAsync(authState.User);
-                // Debug logging
-                if (currentUser != null)
+                // Use DbContextFactory to avoid concurrency issues
+                using var context = await DbContextFactory.CreateDbContextAsync();
+                var userId = UserManager.GetUserId(authState.User);
+                if (!string.IsNullOrEmpty(userId))
                 {
-                    Console.WriteLine($"User loaded: {currentUser.Email}, Role: {currentUser.Role}");
+                    currentUser = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                    // Debug logging
+                    if (currentUser != null)
+                    {
+                        Console.WriteLine($"User loaded: {currentUser.Email}, Role: {currentUser.Role}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Current user is null after DbContext query");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Current user is null after UserManager.GetUserAsync");
+                    Console.WriteLine("User ID is null or empty");
                 }
             }
             else

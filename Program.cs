@@ -29,11 +29,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Use DbContextFactory instead of AddDbContext for better thread safety in Blazor Server
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlServer(connectionString));
 
 // Still need a scoped DbContext for Identity system
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString), ServiceLifetime.Scoped);
+    options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

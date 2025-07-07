@@ -6,16 +6,17 @@ namespace MiniLMS.Repositories;
 
 public class AssignmentRepository : IAssignmentRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public AssignmentRepository(ApplicationDbContext context)
+    public AssignmentRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<IEnumerable<Assignment>> GetActiveAssignmentsAsync()
     {
-        return await _context.Assignments
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Assignments
             .Where(a => a.IsActive)
             .Include(a => a.CreatedBy)
             .OrderByDescending(a => a.CreatedAt)
@@ -24,14 +25,16 @@ public class AssignmentRepository : IAssignmentRepository
 
     public async Task<Assignment?> GetAssignmentByIdAsync(int id)
     {
-        return await _context.Assignments
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Assignments
             .Include(a => a.CreatedBy)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task<Assignment?> GetAssignmentWithQuizzesAsync(int id)
     {
-        return await _context.Assignments
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Assignments
             .Include(a => a.CreatedBy)
             .Include(a => a.Quizzes.OrderBy(q => q.OrderIndex))
             .FirstOrDefaultAsync(a => a.Id == id);
@@ -39,32 +42,36 @@ public class AssignmentRepository : IAssignmentRepository
 
     public async Task<Assignment> CreateAssignmentAsync(Assignment assignment)
     {
+        using var context = await _contextFactory.CreateDbContextAsync();
         assignment.CreatedAt = DateTime.UtcNow;
-        _context.Assignments.Add(assignment);
-        await _context.SaveChangesAsync();
+        context.Assignments.Add(assignment);
+        await context.SaveChangesAsync();
         return assignment;
     }
 
     public async Task<Assignment> UpdateAssignmentAsync(Assignment assignment)
     {
-        _context.Assignments.Update(assignment);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Assignments.Update(assignment);
+        await context.SaveChangesAsync();
         return assignment;
     }
 
     public async Task<bool> DeleteAssignmentAsync(int id)
     {
-        var assignment = await _context.Assignments.FindAsync(id);
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var assignment = await context.Assignments.FindAsync(id);
         if (assignment == null) return false;
 
-        _context.Assignments.Remove(assignment);
-        await _context.SaveChangesAsync();
+        context.Assignments.Remove(assignment);
+        await context.SaveChangesAsync();
         return true;
     }
 
     public async Task<IEnumerable<Assignment>> GetAssignmentsByCreatorAsync(string userId)
     {
-        return await _context.Assignments
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Assignments
             .Where(a => a.CreatedByUserId == userId)
             .Include(a => a.CreatedBy)
             .OrderByDescending(a => a.CreatedAt)

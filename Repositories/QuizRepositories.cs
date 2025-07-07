@@ -6,16 +6,17 @@ namespace MiniLMS.Repositories;
 
 public class QuizRepository : IQuizRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public QuizRepository(ApplicationDbContext context)
+    public QuizRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<IEnumerable<Quiz>> GetQuizzesByAssignmentAsync(int assignmentId)
     {
-        return await _context.Quizzes
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Quizzes
             .Where(q => q.AssignmentId == assignmentId)
             .OrderBy(q => q.OrderIndex)
             .ToListAsync();
@@ -23,48 +24,53 @@ public class QuizRepository : IQuizRepository
 
     public async Task<Quiz?> GetQuizByIdAsync(int id)
     {
-        return await _context.Quizzes
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Quizzes
             .Include(q => q.Assignment)
             .FirstOrDefaultAsync(q => q.Id == id);
     }
 
     public async Task<Quiz> CreateQuizAsync(Quiz quiz)
     {
-        _context.Quizzes.Add(quiz);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Quizzes.Add(quiz);
+        await context.SaveChangesAsync();
         return quiz;
     }
 
     public async Task<Quiz> UpdateQuizAsync(Quiz quiz)
     {
-        _context.Quizzes.Update(quiz);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Quizzes.Update(quiz);
+        await context.SaveChangesAsync();
         return quiz;
     }
 
     public async Task<bool> DeleteQuizAsync(int id)
     {
-        var quiz = await _context.Quizzes.FindAsync(id);
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var quiz = await context.Quizzes.FindAsync(id);
         if (quiz == null) return false;
 
-        _context.Quizzes.Remove(quiz);
-        await _context.SaveChangesAsync();
+        context.Quizzes.Remove(quiz);
+        await context.SaveChangesAsync();
         return true;
     }
 }
 
 public class QuizAnswerRepository : IQuizAnswerRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public QuizAnswerRepository(ApplicationDbContext context)
+    public QuizAnswerRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<IEnumerable<QuizAnswer>> GetAnswersByProgressAsync(int progressId)
     {
-        return await _context.QuizAnswers
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.QuizAnswers
             .Include(qa => qa.Quiz)
             .Where(qa => qa.AssignmentProgressId == progressId)
             .OrderBy(qa => qa.Quiz.OrderIndex)
@@ -73,15 +79,17 @@ public class QuizAnswerRepository : IQuizAnswerRepository
 
     public async Task<QuizAnswer> CreateAnswerAsync(QuizAnswer answer)
     {
+        using var context = await _contextFactory.CreateDbContextAsync();
         answer.AnsweredAt = DateTime.UtcNow;
-        _context.QuizAnswers.Add(answer);
-        await _context.SaveChangesAsync();
+        context.QuizAnswers.Add(answer);
+        await context.SaveChangesAsync();
         return answer;
     }
 
     public async Task<bool> HasUserAnsweredQuizAsync(string userId, int assignmentId)
     {
-        return await _context.QuizAnswers
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.QuizAnswers
             .AnyAsync(qa => qa.AssignmentProgress.UserId == userId && 
                            qa.AssignmentProgress.AssignmentId == assignmentId);
     }

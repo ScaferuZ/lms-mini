@@ -6,16 +6,17 @@ namespace MiniLMS.Repositories;
 
 public class AssignmentProgressRepository : IAssignmentProgressRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public AssignmentProgressRepository(ApplicationDbContext context)
+    public AssignmentProgressRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<AssignmentProgress?> GetUserProgressAsync(string userId, int assignmentId)
     {
-        return await _context.AssignmentProgresses
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.AssignmentProgresses
             .Include(ap => ap.Assignment)
             .Include(ap => ap.User)
             .Include(ap => ap.QuizAnswers)
@@ -25,22 +26,25 @@ public class AssignmentProgressRepository : IAssignmentProgressRepository
 
     public async Task<AssignmentProgress> CreateProgressAsync(AssignmentProgress progress)
     {
+        using var context = await _contextFactory.CreateDbContextAsync();
         progress.CreatedAt = DateTime.UtcNow;
-        _context.AssignmentProgresses.Add(progress);
-        await _context.SaveChangesAsync();
+        context.AssignmentProgresses.Add(progress);
+        await context.SaveChangesAsync();
         return progress;
     }
 
     public async Task<AssignmentProgress> UpdateProgressAsync(AssignmentProgress progress)
     {
-        _context.AssignmentProgresses.Update(progress);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.AssignmentProgresses.Update(progress);
+        await context.SaveChangesAsync();
         return progress;
     }
 
     public async Task<IEnumerable<AssignmentProgress>> GetUserProgressesAsync(string userId)
     {
-        return await _context.AssignmentProgresses
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.AssignmentProgresses
             .Include(ap => ap.Assignment)
             .Include(ap => ap.User)
             .Where(ap => ap.UserId == userId)
@@ -50,7 +54,8 @@ public class AssignmentProgressRepository : IAssignmentProgressRepository
 
     public async Task<IEnumerable<AssignmentProgress>> GetAssignmentProgressesAsync(int assignmentId)
     {
-        return await _context.AssignmentProgresses
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.AssignmentProgresses
             .Include(ap => ap.Assignment)
             .Include(ap => ap.User)
             .Where(ap => ap.AssignmentId == assignmentId)
@@ -60,7 +65,8 @@ public class AssignmentProgressRepository : IAssignmentProgressRepository
 
     public async Task<IEnumerable<AssignmentProgress>> GetSubordinateProgressesAsync(string managerId)
     {
-        return await _context.AssignmentProgresses
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.AssignmentProgresses
             .Include(ap => ap.Assignment)
             .Include(ap => ap.User)
             .Where(ap => ap.User.ManagerId == managerId)

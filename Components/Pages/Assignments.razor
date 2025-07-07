@@ -3,12 +3,14 @@
 @using MiniLMS.Services
 @using MiniLMS.Data
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @using System.Security.Claims
 @rendermode InteractiveServer
 @attribute [Authorize]
 @inject IAssignmentService AssignmentService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 @inject NavigationManager NavigationManager
 
 <PageTitle>My Assignments - Mini LMS</PageTitle>
@@ -138,7 +140,9 @@
             
             if (!string.IsNullOrEmpty(userId))
             {
-                var currentUser = await UserManager.GetUserAsync(authState.User);
+                // Use DbContextFactory to avoid concurrency issues
+                using var context = await DbContextFactory.CreateDbContextAsync();
+                var currentUser = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
                 
                 // Check if user has permission to access this page
                 if (currentUser?.Role == UserRole.Manager)
