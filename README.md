@@ -105,41 +105,44 @@ dotnet run
 
 ### 4. Access the Application
 
-- **URL**: `https://localhost:5001` or `http://localhost:5000`
-- **Default Users** (created automatically):
+- **URL**: `https://localhost:5123` or `http://localhost:5000`
+- **Default Users** (created automatically by DatabaseSeeder):
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@minilms.com | Admin123! |
-| Manager | manager@minilms.com | Manager123! |
-| Learner | learner@minilms.com | Learner123! |
-| Learner | learner2@minilms.com | Learner123! |
-| Learner | learner3@minilms.com | Learner123! |
+| Role | Email | Password | Full Name | Manager |
+|------|-------|----------|-----------|---------|
+| Admin | admin@minilms.com | Admin123! | Admin User | - |
+| Manager | manager@minilms.com | Manager123! | Manager User | - |
+| Learner | learner@minilms.com | Learner123! | Learner User | Manager User |
+| Learner | learner2@minilms.com | Learner123! | Jane Smith | Manager User |
+| Learner | learner3@minilms.com | Learner123! | Bob Johnson | Manager User |
+
+**Note**: All learners are assigned to the same manager for testing the manager dashboard functionality.
 
 ## 📋 Usage
 
 ### For Learners
 
-1. Login with learner credentials
-2. View available assignments on the home page
-3. Click on an assignment to view materials and take quiz
-4. Complete the 5-question quiz to finish the assignment
-5. View progress and scores
+1. **Login**: Use learner credentials to access the system
+2. **View Assignments**: Navigate to home page or `/assignments` to see available assignments
+3. **Start Assignment**: Click on an assignment to view materials and start the quiz
+4. **Complete Quiz**: Answer all 5 questions and submit to finish the assignment
+5. **View Progress**: Check your progress and scores in the `/progress` section
 
 ### For Managers
 
-1. Login with manager credentials
-2. Navigate to **Progress** section
-3. View team members' assignment progress
-4. Monitor completion rates and scores
-5. Track learning outcomes for subordinates
+1. **Login**: Use manager credentials to access management features
+2. **Navigate to Progress**: Access the **Progress** section to view team member progress
+3. **Create Assignments**: Use the API endpoints to create new assignments for your team
+4. **Monitor Performance**: Track completion rates, scores, and learning outcomes of subordinates
+5. **View Reports**: Access detailed progress reports for your subordinates
 
 ### For Admins
 
-1. Login with admin credentials
-2. Access both assignments and progress sections
-3. View system-wide progress and results
-4. Manage assignments and users
+1. **Login**: Use admin credentials for full system access
+2. **System Overview**: Access both assignments and progress sections
+3. **View All Data**: View system-wide progress and results regardless of hierarchy
+4. **Manage System**: Manage all assignments, users, and system configuration
+5. **Full Control**: Create, edit, and manage all aspects of the LMS
 
 ## 🏗️ Project Structure
 
@@ -180,7 +183,10 @@ dotnet run --urls="https://localhost:5001;http://localhost:5000"
 dotnet watch run
 
 # Run tests
-dotnet test
+dotnet test MiniLMS.Tests/MiniLMS.Tests.csproj
+
+# Or use the test script
+./run-tests.sh
 ```
 
 ### Database Management
@@ -201,6 +207,13 @@ dotnet ef database drop
 # Generate SQL script
 dotnet ef migrations script
 ```
+
+**🌱 Database Seeding:**
+- Sample data is automatically created on application startup
+- DatabaseSeeder runs after migrations are applied
+- Creates users, assignments, and sample progress data
+- Uses consistent IDs for testing (Manager ID: `fe271428-fe11-4f33-a754-30be00e32b3e`)
+- All accounts have `EmailConfirmed = true` for immediate access
 
 ### Docker Commands
 
@@ -276,6 +289,8 @@ docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Admi
 
 ### Unit Tests
 
+The project includes comprehensive unit tests for the scoring logic and business rules.
+
 ```bash
 # Run all tests
 dotnet test
@@ -283,9 +298,42 @@ dotnet test
 # Run tests with coverage
 dotnet test --collect:"XPlat Code Coverage"
 
-# Run specific test project
-dotnet test Tests/MiniLMS.Tests.csproj
+# Run specific test project (correct path)
+dotnet test MiniLMS.Tests/MiniLMS.Tests.csproj
+
+# Run tests with detailed output
+dotnet test MiniLMS.Tests/MiniLMS.Tests.csproj --verbosity normal
+
+# Run specific test class
+dotnet test --filter "AssignmentServiceScoringTests"
+
+# Run using the custom test script
+./run-tests.sh
 ```
+
+### Test Coverage
+
+**Scoring Logic Tests** (7 comprehensive tests):
+- ✅ Perfect score (100 points for 5/5 correct answers)
+- ✅ Zero score (0 points for all incorrect answers)
+- ✅ Partial score (60 points for 3/5 correct answers)
+- ✅ Case-insensitive answer comparison ("A" = "a")
+- ✅ Custom point values per question
+- ✅ Business rule validation (prevents double submission)
+- ✅ Error handling (assignment not started scenarios)
+
+**Key Testing Rules:**
+- Each question worth 20 points by default (configurable)
+- Case-insensitive answer matching
+- Single submission per assignment
+- Total possible score: 100 points (5 questions × 20 points)
+
+### Using VS Code Tasks
+
+You can also run tests using VS Code:
+1. Press `Ctrl+Shift+P`
+2. Type "Tasks: Run Task"
+3. Select "test"
 
 ### Manual Testing
 
@@ -294,17 +342,7 @@ dotnet test Tests/MiniLMS.Tests.csproj
 3. **Role Permissions**: Verify access controls for different roles
 4. **Concurrent Users**: Test multiple users simultaneously
 
-## 📝 API Documentation
-
-### Available Endpoints
-
-- `GET /api/assignments` - Get active assignments
-- `GET /api/assignments/{id}` - Get assignment details
-- `POST /api/assignments/{id}/submit` - Submit quiz answers
-- `GET /api/progress/user/{userId}` - Get user progress
-- `GET /api/progress/team/{managerId}` - Get team progress
-
-## 🚀 Deployment
+##  Deployment
 
 ### Local Development
 
@@ -334,29 +372,46 @@ dotnet run --environment Production
 
 ### Sample Data
 
-The application automatically creates sample data including:
-- 3 assignments with 5 questions each
-- Multiple users with different roles
-- Sample progress data showing completed assignments
+The application automatically creates comprehensive sample data on first run:
 
-## 🤝 Contributing
+**👥 User Hierarchy:**
+```
+Admin User (admin@minilms.com)
+└── Manager User (manager@minilms.com)
+    ├── Learner User (learner@minilms.com)
+    ├── Jane Smith (learner2@minilms.com)  
+    └── Bob Johnson (learner3@minilms.com)
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+**📚 Sample Assignments:**
+1. **"Introduction to Clean Architecture"** 
+   - Learn software design principles and dependency inversion
+   - Quiz covers: main principles, layer structure, testability concepts
+   
+2. **"Entity Framework Core Fundamentals"** 
+   - Master ORM concepts and database operations
+   - Quiz covers: DbContext, Code First, migrations, LINQ querying
+   
+3. **"Blazor Server Development"** 
+   - Build interactive web applications with real-time features
+   - Quiz covers: components, lifecycle, SignalR, state management
 
-## 📄 License
+Each assignment includes:
+- Rich HTML learning materials with structured content
+- 5 multiple-choice questions (A, B, C, D options)
+- 20 points per question (100 points total)
+- Due dates set 7-10 days from creation
+- Questions directly related to the learning material
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+**📊 Sample Progress Data:**
+- Some learners have completed assignments (for testing manager dashboard)
+- Various completion statuses and scores
+- Realistic progress tracking scenarios
 
-## 📞 Support
-
-For issues and questions:
-- Create an issue in the repository
-- Check the documentation
-- Review the code comments and examples
+**🎯 Testing Scenarios:**
+- **Manager View**: Login as manager to see all 3 subordinates' progress
+- **Learner Experience**: Complete assignments and see score calculation
+- **Admin Overview**: Access to all users and assignments across the system
 
 ---
 
@@ -380,45 +435,7 @@ For issues and questions:
 
 The application uses ASP.NET Core Identity with cookie-based authentication. Email confirmation is required by default but can be disabled in development.
 
-## 🎮 Usage
-
-### For Learners
-
-1. **View Assignments**: Navigate to `/assignments` to see available assignments
-2. **Start Assignment**: Click on an assignment to view materials and start the quiz
-3. **Complete Quiz**: Answer all 5 questions and submit
-4. **View Progress**: Check your progress and scores in the `/progress` section
-
-### For Managers
-
-1. **Create Assignments**: Use the API endpoints to create new assignments
-2. **View Reports**: Access the Progress section to view team member progress
-3. **Monitor Performance**: Track completion rates and scores of subordinates
-
-### For Admins
-
-- Full access to all features
-- Can view all user progress regardless of hierarchy
-- Can manage all assignments and users
-
 ## 🛠️ Development
-
-### Project Structure
-
-```
-MiniLMS/
-├── Components/
-│   ├── Pages/              # Blazor pages
-│   ├── Layout/             # Layout components
-│   └── Account/            # Identity components
-├── Controllers/            # API controllers
-├── Data/                   # Entity Framework context
-├── DTOs/                   # Data Transfer Objects
-├── Models/                 # Domain entities
-├── Repositories/           # Data access layer
-├── Services/              # Business logic layer
-└── wwwroot/               # Static files
-```
 
 ### Adding New Features
 
@@ -442,19 +459,32 @@ dotnet ef database update
 dotnet ef migrations remove
 ```
 
-## 🧪 Testing
+## 📋 Test Architecture
 
-### Unit Tests
+### Current Test Implementation
 
-- Service layer tests for business logic
-- Repository tests for data access
-- Controller tests for API endpoints
+- **Framework**: xUnit with Moq for mocking
+- **Coverage**: Scoring logic business rules
+- **Isolation**: No external dependencies (database, file system)
+- **Performance**: Fast execution (< 5 seconds)
 
-### Integration Tests
+### Test Organization
 
-- End-to-end testing of complete workflows
-- Database integration tests
-- Authentication flow tests
+```
+MiniLMS.Tests/
+├── Services/
+│   └── AssignmentServiceScoringTests.cs  # Scoring logic tests
+├── GlobalUsings.cs                       # Common using statements
+├── SimpleTest.cs                         # Basic verification test
+└── README.md                            # Detailed test documentation
+```
+
+### Future Test Expansion
+
+- Repository tests for data access patterns
+- Controller tests for API endpoint validation
+- Integration tests for end-to-end workflows
+- Authentication and authorization tests
 
 ## 📝 API Endpoints
 
@@ -486,30 +516,6 @@ dotnet ef migrations remove
 - Service-level permission checks
 - Manager can only view subordinate data
 - Admin has full access to all data
-
-## 🚀 Deployment
-
-### Development
-
-```bash
-dotnet run --environment Development
-```
-
-### Production
-
-```bash
-dotnet publish -c Release
-```
-
-### Docker (Optional)
-
-```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-COPY bin/Release/net8.0/publish/ App/
-WORKDIR /App
-EXPOSE 80
-ENTRYPOINT ["dotnet", "MiniLMS.dll"]
-```
 
 ## 📋 Business Rules
 

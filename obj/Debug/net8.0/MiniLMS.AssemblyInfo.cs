@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiniLMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a36503154e3fa164a452b292a700269f9d5c48c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcc887483f46e49a37c6f8d51ebe3930d62e158d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiniLMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiniLMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -26,6 +26,14 @@
       "group": "build",
       "problemMatcher": ["$msCompile"],
       "isBackground": true
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "dotnet",
+      "args": ["test", "MiniLMS.Tests/MiniLMS.Tests.csproj"],
+      "group": "test",
+      "problemMatcher": ["$msCompile"]
     }
   ]
 }
