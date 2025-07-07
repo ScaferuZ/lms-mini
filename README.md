@@ -2,9 +2,9 @@
 
 A .NET 8 Blazor Server application implementing a mini Learning Management System (LMS) with clean architecture, featuring assignment management, quiz functionality, and progress tracking.
 
-## Features
+## 🎯 Features
 
-### 🎯 Core Functionality
+### Core Functionality
 
 - **Assignment Management**: Create and manage learning assignments with materials
 - **Quiz System**: 5 multiple-choice questions per assignment (20 points each)
@@ -12,52 +12,214 @@ A .NET 8 Blazor Server application implementing a mini Learning Management Syste
 - **User Roles**: Learner, Manager, and Admin roles with appropriate permissions
 - **Manager Dashboard**: View subordinate progress and results
 
-### 🏗️ Architecture
+### Architecture
 
 - **Clean Architecture**: Controller → Service → Repository pattern
 - **Frontend**: Blazor Server with Interactive Server components
 - **Backend**: ASP.NET Core Web API controllers
-- **Database**: Entity Framework Core with SQLite (configurable for SQL Server/PostgreSQL)
+- **Database**: Entity Framework Core with SQL Server
 - **Authentication**: ASP.NET Core Identity with cookie-based authentication
+- **Thread Safety**: IDbContextFactory pattern for Blazor Server concurrency
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - .NET 8 SDK
+- Docker (for SQL Server)
 - Visual Studio 2022 / VS Code
-- SQLite (included) or SQL Server/PostgreSQL (optional)
 
-### Installation
+### 1. Setup SQL Server with Docker
 
-1. **Clone the repository**
+Run SQL Server in a Docker container:
 
-   ```bash
-   git clone <repository-url>
-   cd mini-lms
-   ```
+```bash
+# Pull and run SQL Server container
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Admin123!" \
+   -p 1433:1433 --name sqlserver --hostname sqlserver \
+   -d mcr.microsoft.com/mssql/server:2022-latest
 
-2. **Restore packages**
+# Verify container is running
+docker ps
+```
 
-   ```bash
-   dotnet restore
-   ```
+Alternative using Docker Compose (create `docker-compose.yml`):
 
-3. **Update database**
+```yaml
+version: '3.8'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Admin123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+volumes:
+  sqldata:
+```
 
-   ```bash
-   dotnet ef database update
-   ```
+Then run:
+```bash
+docker-compose up -d
+```
 
-4. **Run the application**
+### 2. Clone and Setup Project
 
-   ```bash
-   dotnet run
-   ```
+```bash
+# Clone the repository
+git clone <repository-url>
+cd mini-lms
 
-5. **Access the application**
-   - Open your browser to `https://localhost:5001` or `http://localhost:5000`
-   - Register a new account or login with existing credentials
+# Restore packages
+dotnet restore
+
+# Trust development certificates
+dotnet dev-certs https --trust
+```
+
+### 3. Database Setup
+
+The application uses SQL Server with the following connection string (already configured):
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost,1433;Database=MiniLMS;User ID=sa;Password=Admin123!;Encrypt=True;TrustServerCertificate=True"
+  }
+}
+```
+
+Apply migrations and seed data:
+
+```bash
+# Apply database migrations
+dotnet ef database update
+
+# Run the application (migrations and seeding happen automatically)
+dotnet run
+```
+
+### 4. Access the Application
+
+- **URL**: `https://localhost:5001` or `http://localhost:5000`
+- **Default Users** (created automatically):
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@minilms.com | Admin123! |
+| Manager | manager@minilms.com | Manager123! |
+| Learner | learner@minilms.com | Learner123! |
+| Learner | learner2@minilms.com | Learner123! |
+| Learner | learner3@minilms.com | Learner123! |
+
+## 📋 Usage
+
+### For Learners
+
+1. Login with learner credentials
+2. View available assignments on the home page
+3. Click on an assignment to view materials and take quiz
+4. Complete the 5-question quiz to finish the assignment
+5. View progress and scores
+
+### For Managers
+
+1. Login with manager credentials
+2. Navigate to **Progress** section
+3. View team members' assignment progress
+4. Monitor completion rates and scores
+5. Track learning outcomes for subordinates
+
+### For Admins
+
+1. Login with admin credentials
+2. Access both assignments and progress sections
+3. View system-wide progress and results
+4. Manage assignments and users
+
+## 🏗️ Project Structure
+
+```
+MiniLMS/
+├── Components/
+│   ├── Pages/              # Blazor pages
+│   │   ├── Home.razor      # Landing page with role-based content
+│   │   ├── Assignments.razor # Assignment list for learners
+│   │   ├── AssignmentDetails.razor # Assignment details and quiz
+│   │   └── Progress.razor   # Progress tracking for managers
+│   └── Layout/             # Layout components
+├── Controllers/            # API controllers
+├── Data/                   # DbContext and ApplicationUser
+├── DTOs/                   # Data Transfer Objects
+├── Models/                 # Domain entities
+├── Repositories/           # Data access layer
+├── Services/               # Business logic layer
+├── Migrations/             # EF Core migrations
+└── wwwroot/               # Static files
+```
+
+## 🔧 Development Scripts
+
+### Essential Commands
+
+```bash
+# Build the project
+dotnet build
+
+# Run the application
+dotnet run
+
+# Run with specific URLs
+dotnet run --urls="https://localhost:5001;http://localhost:5000"
+
+# Watch for changes (hot reload)
+dotnet watch run
+
+# Run tests
+dotnet test
+```
+
+### Database Management
+
+```bash
+# Create a new migration
+dotnet ef migrations add <MigrationName>
+
+# Apply migrations
+dotnet ef database update
+
+# Remove last migration
+dotnet ef migrations remove
+
+# Drop database
+dotnet ef database drop
+
+# Generate SQL script
+dotnet ef migrations script
+```
+
+### Docker Commands
+
+```bash
+# Start SQL Server container
+docker start sqlserver
+
+# Stop SQL Server container
+docker stop sqlserver
+
+# Remove SQL Server container
+docker rm sqlserver
+
+# View container logs
+docker logs sqlserver
+
+# Connect to SQL Server container
+docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Admin123!
+```
 
 ## 📊 Database Schema
 
@@ -77,27 +239,128 @@ A .NET 8 Blazor Server application implementing a mini Learning Management Syste
 - AssignmentProgress → User & Assignment
 - QuizAnswer → Quiz & AssignmentProgress
 
-## 🔧 Configuration
+## �️ Technical Details
 
-### Database Providers
+### Architecture Patterns
 
-The application supports multiple database providers:
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic separation
+- **DTO Pattern**: Data transfer between layers
+- **Clean Architecture**: Dependency inversion and separation of concerns
 
-#### SQLite (Default)
+### Key Technologies
 
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Data Source=Data/app.db"
-  }
-}
+- **.NET 8**: Latest framework with performance improvements
+- **Blazor Server**: Interactive web UI with SignalR
+- **Entity Framework Core**: ORM with Code First approach
+- **ASP.NET Core Identity**: Authentication and authorization
+- **AutoMapper**: Object-to-object mapping
+- **SQL Server**: Production-ready database
+
+### Performance Optimizations
+
+- **IDbContextFactory**: Thread-safe DbContext creation for Blazor Server
+- **Async/Await**: Non-blocking operations throughout
+- **Connection Pooling**: Efficient database connection management
+- **Lazy Loading**: Optimized data fetching
+
+## 🔒 Security Features
+
+- **Authentication**: Cookie-based authentication via ASP.NET Core Identity
+- **Authorization**: Role-based access control
+- **Input Validation**: Form validation and sanitization
+- **SQL Injection Prevention**: EF Core parameterized queries
+- **CSRF Protection**: Anti-forgery tokens
+
+## 🧪 Testing
+
+### Unit Tests
+
+```bash
+# Run all tests
+dotnet test
+
+# Run tests with coverage
+dotnet test --collect:"XPlat Code Coverage"
+
+# Run specific test project
+dotnet test Tests/MiniLMS.Tests.csproj
 ```
 
-#### SQL Server
+### Manual Testing
 
-```json
-{
-  "ConnectionStrings": {
+1. **Assignment Flow**: Create → View → Complete Quiz → Check Progress
+2. **Manager Dashboard**: Login as manager → View team progress
+3. **Role Permissions**: Verify access controls for different roles
+4. **Concurrent Users**: Test multiple users simultaneously
+
+## 📝 API Documentation
+
+### Available Endpoints
+
+- `GET /api/assignments` - Get active assignments
+- `GET /api/assignments/{id}` - Get assignment details
+- `POST /api/assignments/{id}/submit` - Submit quiz answers
+- `GET /api/progress/user/{userId}` - Get user progress
+- `GET /api/progress/team/{managerId}` - Get team progress
+
+## 🚀 Deployment
+
+### Local Development
+
+```bash
+# Development mode
+dotnet run --environment Development
+
+# Production simulation
+dotnet run --environment Production
+```
+
+### Production Deployment
+
+1. **Database**: Update connection string for production SQL Server
+2. **Secrets**: Use Azure Key Vault or environment variables
+3. **Hosting**: Deploy to Azure App Service or IIS
+4. **SSL**: Configure HTTPS certificates
+
+## 📚 Learning Resources
+
+### Business Rules
+
+- Users can only submit answers **once per assignment**
+- Scoring: 1 correct answer = 20 points (total 100 points possible)
+- Managers can only view **subordinate progress**
+- Clean separation of concerns between layers
+
+### Sample Data
+
+The application automatically creates sample data including:
+- 3 assignments with 5 questions each
+- Multiple users with different roles
+- Sample progress data showing completed assignments
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Support
+
+For issues and questions:
+- Create an issue in the repository
+- Check the documentation
+- Review the code comments and examples
+
+---
+
+**Mini LMS** - A clean, scalable learning management system built with modern .NET technologies.
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MiniLMS;Trusted_Connection=true"
   }
 }
